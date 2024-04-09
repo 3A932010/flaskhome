@@ -1,23 +1,13 @@
-from flask import Flask
-app = Flask(__name__)
+from flask import Flask, render_template
+app = Flask(__name__, template_folder='templates')
 
 @app.route('/')
 def index():
-    return 'Hellow World'
-
-@app.route('/hellow')
-def hello():
-    return '<h1>Hello Flask</h1>'
+    return render_template('index.html')
 
 @app.route('/user/<name>')
 def user(name):
-    return '<h1>Hello, {}!</h1>'.format(name)
-
-
-@app.route('/user/<name>/<surname>')
-def user(name, surname):
-    return '<h1>Hello, {}{}!</h1>'.format(name, surname)
-
+    return render_template('user.html', name=name)
 
 if __name__ == '__main__':
     app.run()
