@@ -4,7 +4,7 @@ app = Flask(__name__, template_folder='templates',
             static_url_path='/static', static_folder='static')
 
 @app.route('/')
-@app.route('/index', ,ethods=['GET'])
+@app.route('/index', methods=['GET'])
 def index():
     name = request.args.get('name')
     return render_template('index.html', **locals())
