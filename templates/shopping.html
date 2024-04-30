@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}購物網{% endblock %}
+
+{% block content %}
+<div class="btn-group">
+    <div class="btn-group">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">Apple</button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">iPhone</a></li>
+            <li><a class="dropdown-item" href="#">iPad</a></li>
+            <li><a class="dropdown-item" href="#">iPad Air</a></li>
+        </ul>
+        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">Samsung</button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Home Appliances</a></li>
+            <li><a class="dropdown-item" href="#">Mobile Device</a></li>
+            <li><a class="dropdown-item" href="#">SmartThings</a></li>
+        </ul>
+        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">Sony</button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Tablet</a></li>
+            <li><a class="dropdown-item" href="#">Smartphone</a></li>
+        </ul>
+    </div>
+</div>
+{% endblock %}
