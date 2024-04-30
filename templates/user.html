@@ -23,8 +23,8 @@
                     <a class="nav-link" href="{{url_for('welfare_platform')}}">福利平台</a>
                 </li>
             </ul>
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="搜尋">
+            <form method="POST" action="{{url_for('search')}}" class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="搜尋" name="keyword">
                 <button class="btn btn-outline-success" type="submit">搜尋</button>
             </form>
         </div>
@@ -32,4 +32,5 @@
 </nav>
 <h1 style="text-align: center">Hello, {{name}}!</h1>
 <p style="text-align: center">Welcome to the world of Flask</p>
+<h1 style="text-align: center">{{message}}</h1>
 {% endblock %}
