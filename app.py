@@ -28,7 +28,7 @@ def user(username):
     name = username
     return render_template('user.html', name=username)
 
-@app.route('/search', method=['POST'])
+@app.route('/search', methods=['POST'])
 def search():
     global name
     username=name
@@ -36,7 +36,9 @@ def search():
     if keyword == '紅燈':
         message = '紅燈停!'
     elif keyword == '黃燈':
-        message ='綠燈行!'
+        message ='加速通過馬路或停下等候綠燈!'
+    elif keyword == '綠燈':
+        message ='綠燈行!'    
     else:
         message='請重新輸入!'
     return render_template('user.html', name=username, message=message)
