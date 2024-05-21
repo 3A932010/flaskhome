@@ -1,12 +1,17 @@
 from flask import Flask, render_template, request
-from flask import redirect, url_for
+from flask import redirect, url_for, session
+from flask_wtf import FlaskForm
+from wtforms import StringField, DateField, PasswordField, SubmitField, validators
+from datetime import timedelta
 import hashlib
 import psycopg2
+import psycopg2.extras
 import dbconn
 app = Flask(__name__, template_folder='templates',
             static_url_path='/static', static_folder='static')
 app.secret_key='fd4723e200261a2271ea912571eaaa1d'
-name = ''
+app.permanent_session_lifetime = timedelta(minutes=3)
+
 
 #DB Connection
 def get_db_connection():
@@ -16,6 +21,19 @@ def get_db_connection():
         user=dbconn.user,
         password=dbconn.password)
     return conn
+
+
+#Registration Form
+class RegistrationForm(FlaskForm):
+    username = StringField('帳號', [validators.DataRequired(),validators.Length(min=4, max=50)])
+    userpass = PasswordField('密碼', [validators.DataRequired(),validators.Length(min=4, max=50),validators.EqualTo('confirm', message='密碼必須與確認密碼一樣')])
+    confirm = PasswordField('確認密碼')
+    name=StringField('姓名', [validators.DataRequired(), validators.Length(min=4, max=8)])
+    birthday = DateField('生日', format='%Y-%m-%d')
+    phone= StringField('電話', [validators.DataRequired(),validators.Length(min=7, max=13)])
+    address = StringField('地址', [validators.Length(min=6, max=50)])
+    email=StringField('電子郵件',[validators.DataRequired(), validators.Length(min=6, max=50)])
+    submit = SubmitField('立即註冊')
 
 @app.route('/')
 @app.route('/index', methods=['GET'])
@@ -76,17 +94,67 @@ def login():
         hashpass=md.hexdigest()
 
         conn=get_db_connection()
-        cursor=conn.cursor()
+        cursor=conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
         SQL=f"SELECT username,userpass FROM account WHERE username='{username}';"
         cursor.execute(SQL)
         user=cursor.fetchone()
         cursor.close()
         conn.close()
 
-        if(username==user[0] and hashpass == user[1]):
+        if(username==user['username'] and hashpass == user[userpass]):
+            session.permanent = True
             session['username']=username
             return redirect(url_for('user'))        
     else:
         if 'username' in session:
             return redirect(url_for('user'))
-        render_template("member/signin.html")
+        
+    render_template("member/signin.html")
+
+@app.route('/member/signup')
+def signup():
+    regform=RegistrationForm()
+    return render_template('member/signup.html', form=regform)
+
+@app.route('/member/join', methods=["POST"])
+def join():
+    if request.method == 'POST':
+        regform = RegistrationForm()
+        if regform.validate_on_submit():
+            username = regform.username.data
+            userpass = regform.userpass.data
+            name = regform.name.data
+            birthday = regform.birthday.data
+            phone = regform.phone.data
+            address= regform.address.data
+            email= regform.email.data
+
+            conn=get_db_connection()
+            cursor = conn.cursor()
+
+            SQL="SELECT COUNT(*) FROM member"
+            cursor.execute(SQL)
+            count = cursor.fetchone()[0]
+            mid = 'm' + str(count + 1).zfill(4)
+
+            SQL2 = f"INSERT INTO member VALUES('{mid}','{name}','{birthday}','{phone}','{address}','{email}');"
+            cursor.execute(SQL2)
+
+            SQL3 = f"INSERT INTO account(mid,username,userpass) VALUES('{mid}','{username}','{userpass}');"
+            cursor.execute(SQL3)
+
+            conn.commit()
+            cursor.close()
+            conn.close()
+
+        return redirect(url_for('signin'))
+
+@app.route('/member/forgot')
+def forgot():
+    return 'Pass'
+
+@app.route('/member/logout')
+def logout():
+    session.pop('username', None)
+    return redirect(url_for('signin'))
+     

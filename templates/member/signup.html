@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %} GoGo智慧家庭-會員註冊 {% endblock %}
+{% block content %}
+<div class="container-fluid">
+    <h1 style="text-align: center;">GoGo智慧家庭-填寫註冊資料</h1>
+    <form method="POST" action="{{ url_for('join')}}">
+        {{ form.hidden_tag() }}
+        {{ form.username.label(class='form-label') }}
+        {{ form.username(class='form-control') }}
+        <br>
+        {{ form.userpass.label(class='form-label') }}
+        {{ form.userpass(class='form-control') }}
+        <br>
+        {{ form.confirm.label(class='form-label') }}
+        {{ form.confirm(class='form-control') }}
+        <br>
+        {{ form.name.label(class='form-label') }}
+        {{ form.name(class='form-control') }}
+        <br>
+        {{ form.birthday.label(class='form-label') }}
+        {{ form.birthday(class='form-control') }}
+        <br>
+        {{ form.phone.label(class='form-label') }}
+        {{ form.phone(class='form-label') }}
+        <br>
+        {{ form.address.label(class='form-label') }}
+        {{ form.address(class='form-control') }}
+        <br>
+        {{ form.email.label(class='form-label') }}
+        {{ form.email(class='form-control') }}
+        <br>
+        {{ form.submit(class='btn btn-primary') }}
+    </form>
+</div>
+{% endblock %}
