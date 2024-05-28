@@ -38,8 +38,19 @@ class RegistrationForm(FlaskForm):
 @app.route('/')
 @app.route('/index', methods=['GET'])
 def index():
-    name = request.args.get('name')
-    return render_template('index.html', **locals())
+    return render_template('index.html')
+
+@app.route('/product')
+def product():
+    return render_template('product.html')
+
+@app.route('/aboutus')
+def aboutus():
+    return render_template('aboutus.html')
+
+@app.route('/contactus')
+def contactus():
+    return render_template('contactus.html')
 
 @app.route('/shopping')
 def shopping():

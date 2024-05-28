@@ -6,12 +6,76 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %} {% endblock %}</title>
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
     {% block style %} {%endblock%}
 </head>
 
 <body>
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <a class="navbar-brand" href="{{ url_for('index') }}">
+            <img src="{{ url_for('static', filename='img/home.jpg') }}" width="50" height="50"
+                alt="CJSHS Smart Health" />
+            <span>回首頁</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSmartHome"
+            aria-controls="navbarSupporteContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSmartHome">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('product') }}">產品型錄</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('aboutus') }}">關於我們</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('contactus') }}">聯絡我們</a>
+                </li>
+            </ul>
+        </div>
+        <ul class="nav navbar-nav navbar-right">
+            {% if not session['username'] %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('signin') }}">登入</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('signup') }}">加入會員</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('logout') }}">登出</a>
+            </li>
+            {% endif %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('user') }}">會員專區</a>
+            </li>
+        </ul>
+    </nav>
     {% block content %}
     {% endblock %}
+
+    <footer class="container-fluid">
+        <div class="row">
+            <div class="col-md-4">
+                <h1 class="h5 text-primary">GoGo智慧家庭</h1>
+                <p>Copyright &copy; since 2024 All Rights Reserved.</p>
+            </div>
+            <div class="col-md-5">
+                <h1 class="h5">地址:701 台中市太平區中山路二段57號</h1>
+                <h1 class="h5">TEL:(04)2392-4505</h1>
+                <h1 class="h5">Email:
+                    <a href="mailto:fordlin@ncut.edu.tw">fordlin@ncut.edu.tw</a>
+                </h1>
+            </div>
+            <div class="col-md-3">
+                <h1 class="h5 text-primary">GoGo智慧家庭</h1>
+                <p>個人智慧家庭的小幫手</p>
+                <p>使智慧生活變得簡單</p>
+            </div>
+        </div>
+    </footer>
 
     <script src="{{ url_for('static', filename='js/jquery-3.7.1.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/popper-2.11.8.min.js') }}"></script>

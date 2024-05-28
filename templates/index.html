@@ -1,7 +1,17 @@
 {% extends "base.html" %}
-{% block title %} Flask Home {% endblock %}
+{% block title %} GoGo智慧家庭 {% endblock %}
+{% block style %}
+<style>
+    h1,
+    h2 {
+        text-align: center
+    }
+</style>
+{% endblock %}
 {% block content %}
 <div class="mt-4 p-5 bg-primary text-white rounded">
-    <h1 class="display-4" style="text-align:center">Hello, {{ name }}</h1>
+    <h1 class="display-4">GoGo智慧家庭</h1>
+    <h2 class="display-6">個人智慧家庭的小幫手</h2>
+    <h2 class="display-6">使智慧生活變得更簡單</h2>
 </div>
 {% endblock %}
