@@ -47,7 +47,7 @@ class Member(db.Model):
     name = db.Cloumn(db.String(8), unique=True,nullable=False)
     birthday = db.Column(db.Date)
     phone = db.Column(db.String(50))
-    email = db.Column(db.String(50), nullable=false)
+    email = db.Column(db.String(50), nullable=False)
     role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
     accounts= db.relationship('Account', backref='member', uselist=False)
 
