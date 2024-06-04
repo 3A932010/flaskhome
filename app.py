@@ -16,7 +16,7 @@ app.config['SQLALCHEMY_DATABASE_URI']=f'postgresql://{dbconn.user}:{dbconn.passw
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 
 #SQLAlchemy DB Connection
-db_SQLAlchemy(app)
+db=SQLAlchemy(app)
 
 #DB Connection
 def get_db_connection():
