@@ -44,7 +44,7 @@ class RegistrationForm(FlaskForm):
 class Member(db.Model):
     __table_name__='member'
     mid = db.Column(db.String(5), primary_key=True)
-    name = db.Cloumn(db.String(8), unique=True,nullable=False)
+    name = db.Column(db.String(8), unique=True, nullable=False)
     birthday = db.Column(db.Date)
     phone = db.Column(db.String(50))
     email = db.Column(db.String(50), nullable=False)
@@ -108,7 +108,7 @@ def welfare_platform():
 
 @app.route('/user')
 def user():
-    if 'username' in seesion:
+    if 'username' in session:
         username=session['username']
         return render_template('user.html', name=username)
     else:
