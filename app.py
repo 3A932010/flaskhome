@@ -40,9 +40,46 @@ class RegistrationForm(FlaskForm):
     email=StringField('電子郵件',[validators.DataRequired(), validators.Length(min=6, max=50)])
     submit = SubmitField('立即註冊')
 
+#Member Class
+class Member(db.Model):
+    __table_name__='member'
+    mid = db.Column(db.String(5), primary_key=True)
+    name = db.Cloumn(db.String(8), unique=True,nullable=False)
+    birthday = db.Column(db.Date)
+    phone = db.Column(db.String(50))
+    email = db.Column(db.String(50), nullable=false)
+    role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
+    accounts= db.relationship('Account', backref='member', uselist=False)
+
+    def __repr__(self):
+        return f'<Member {self.username}>'
+
+#Account Class
+class Account(db.Model):
+    __table_name__ = 'account'
+    aid = db.Column(db.Integer,Primary_key=True)
+    username = db.Column(db.String(50), unique=True, nullable=False)
+    userpass = db.Column(db.String(50), nullable=False)
+    mid = db.Column(db.String(5), db.ForeignKey('member.mid'))    
+
+    def __repr__(self):
+        return f'<Account {self.username}>'
+
+#Role Class
+class Role(db.Model):
+    __table_name__ = 'role'
+    id = db.Column(db.Integer,Primary_key=True)
+    name = db.Column(db.String(64), unique=True, nullable=False)
+    members=db.relationship('Member', backref='role')    
+
+    def __repr__(self):
+        return f'<Role {self.name}>'
+
+
 @app.route('/')
 @app.route('/index', methods=['GET'])
 def index():
+    db.create_all()
     return render_template('index.html')
 
 @app.route('/product')
@@ -121,7 +158,8 @@ def login():
         if not user:
             return redirect(url_for('signin'))
 
-        if(username==user['username'] and hashpass == user[userpass]):
+        #if(username==user['username'] and hashpass == user[userpass]):
+        if(username==user.username and hashpass == user.userpass):
             session.permanent = True
             session['username']=username
             return redirect(url_for('user'))
