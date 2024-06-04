@@ -3,3 +3,5 @@ gunicorn
 psycopg2-binary
 WTForms
 Flask-WTF
+SQLAlchemy
+Flask-SQLAlchemy

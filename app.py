@@ -3,6 +3,7 @@ from flask import redirect, url_for, session
 from flask_wtf import FlaskForm
 from wtforms import StringField, DateField, PasswordField, SubmitField, validators
 from datetime import timedelta
+from flask_sqlalchemy import SQLAlchemy
 import hashlib
 import psycopg2
 import psycopg2.extras
@@ -11,7 +12,11 @@ app = Flask(__name__, template_folder='templates',
             static_url_path='/static', static_folder='static')
 app.secret_key='fd4723e200261a2271ea912571eaaa1d'
 app.permanent_session_lifetime = timedelta(minutes=3)
+app.config['SQLALCHEMY_DATABASE_URI']=f'postgresql://{dbconn.user}:{dbconn.password}@{dbconn.host}/{dbconn.database}'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=false
 
+#SQLAlchemy DB Connection
+db_SQLAlchemy(app)
 
 #DB Connection
 def get_db_connection():
@@ -95,7 +100,7 @@ def search():
 def signin():
     return render_template('member/signin.html')
 
-@app.route('/member/login', methods=["POST"])
+@app.route('/member/login', methods=["GET","POST"])
 def login():
     if request.method == 'POST':
         username=request.form['username']
@@ -104,23 +109,29 @@ def login():
         md.update(userpass.encode('utf-8'))
         hashpass=md.hexdigest()
 
-        conn=get_db_connection()
+        '''conn=get_db_connection()
         cursor=conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
         SQL=f"SELECT username,userpass FROM account WHERE username='{username}';"
         cursor.execute(SQL)
         user=cursor.fetchone()
         cursor.close()
-        conn.close()
+        conn.close()'''
+
+        user=Account.query.filter_by(username=username).first()
+        if not user:
+            return redirect(url_for('signin'))
 
         if(username==user['username'] and hashpass == user[userpass]):
             session.permanent = True
             session['username']=username
-            return redirect(url_for('user'))        
+            return redirect(url_for('user'))
+        else:
+            return redirect(url_for('signin'))       
     else:
         if 'username' in session:
             return redirect(url_for('user'))
         
-    render_template("member/signin.html")
+    return render_template("member/signin.html")
 
 @app.route('/member/signup')
 def signup():
