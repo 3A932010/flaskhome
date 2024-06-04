@@ -13,7 +13,7 @@ app = Flask(__name__, template_folder='templates',
 app.secret_key='fd4723e200261a2271ea912571eaaa1d'
 app.permanent_session_lifetime = timedelta(minutes=3)
 app.config['SQLALCHEMY_DATABASE_URI']=f'postgresql://{dbconn.user}:{dbconn.password}@{dbconn.host}/{dbconn.database}'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=false
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 
 #SQLAlchemy DB Connection
 db_SQLAlchemy(app)
