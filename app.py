@@ -68,7 +68,7 @@ class Account(db.Model):
 #Role Class
 class Role(db.Model):
     __table_name__ = 'role'
-    id = db.Column(db.Integer,Primary_key=True)
+    id = db.Column(db.Integer,primary_key=True)
     name = db.Column(db.String(64), unique=True, nullable=False)
     members=db.relationship('Member', backref='role')    
 
