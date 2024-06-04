@@ -57,7 +57,7 @@ class Member(db.Model):
 #Account Class
 class Account(db.Model):
     __table_name__ = 'account'
-    aid = db.Column(db.Integer,Primary_key=True)
+    aid = db.Column(db.Integer,primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
     userpass = db.Column(db.String(50), nullable=False)
     mid = db.Column(db.String(5), db.ForeignKey('member.mid'))    
